@@ -5,11 +5,12 @@ import doobie._
 import doobie.implicits._
 import doobie.util.ExecutionContexts
 import fs2.Stream
+import org.twbraam.dbapiserver.db.testDoobie.domain.Country
 
 
 
 
-object SelectingData extends App {
+object a_SelectingData extends App {
 
   implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContexts.synchronous)
 
@@ -32,8 +33,6 @@ object SelectingData extends App {
 
   val y = xa.yolo // a stable reference is required
   import y._
-
-  case class Country(code: String, name: String, pop: Int, gnp: Option[Double])
 
   sql"select code, name, population, gnp from country"
     .query[Country] // Query0[String]
