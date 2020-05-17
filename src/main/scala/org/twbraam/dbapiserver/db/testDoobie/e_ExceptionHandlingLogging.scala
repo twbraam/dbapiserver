@@ -11,7 +11,7 @@ import domain._
 import doobie.postgres._
 
 
-object e_ExceptionHandling extends App {
+object e_ExceptionHandlingLogging extends App {
 
   //////////////////////////// Setup //////////////////////////////////
 
@@ -19,7 +19,7 @@ object e_ExceptionHandling extends App {
 
   val xa = Transactor.fromDriverManager[IO](
     "org.postgresql.Driver",
-    "jdbc:postgresql://192.168.39.11:32207/awesomedb",
+    "jdbc:postgresql://192.168.29.131:30657/awesomedb",
     "amazinguser",
     "perfectpassword",
     Blocker.liftExecutionContext(ExecutionContexts.synchronous)
@@ -69,6 +69,26 @@ object e_ExceptionHandling extends App {
   //   Right(Person(4,steve))
 
 
+  //////////////////////////// Logging //////////////////////////////////
 
+  def byName(pat: String) = {
+    sql"select name, code from country where name like $pat"
+      .queryWithLogHandler[(String, String)](LogHandler.jdkLogHandler)
+      .to[List]
+      .transact(xa)
+  }
+
+  byName("U%").unsafeRunSync
+
+  /////////////////// using implicit loghandler //////////////////////////
+  implicit val han: LogHandler = MyLogger.logHandler
+
+  def byName2(pat: String) = {
+    sql"select name, code from country where name like $pat"
+      .query[(String, String)] // handler will be picked up here
+      .to[List]
+      .transact(xa)
+  }
+  byName2("U%").unsafeRunSync
 
 }

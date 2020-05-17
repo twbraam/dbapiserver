@@ -17,7 +17,7 @@ object d_Fragments extends App {
 
   val xa = Transactor.fromDriverManager[IO](
     "org.postgresql.Driver",
-    "jdbc:postgresql://192.168.39.11:32207/awesomedb",
+    "jdbc:postgresql://192.168.29.131:30657/awesomedb",
     "amazinguser",
     "perfectpassword",
     Blocker.liftExecutionContext(ExecutionContexts.synchronous)
