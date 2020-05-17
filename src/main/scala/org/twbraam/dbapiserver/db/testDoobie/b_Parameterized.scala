@@ -10,6 +10,8 @@ import org.twbraam.dbapiserver.db.testDoobie.domain.Country
 
 object b_Parameterized extends App {
 
+  //////////////////////////// Setup //////////////////////////////////
+
   implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContexts.synchronous)
 
   val xa = Transactor.fromDriverManager[IO](

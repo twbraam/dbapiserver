@@ -13,6 +13,8 @@ import fs2.Stream
 
 object c_InsertingUpdating extends App {
 
+  //////////////////////////// Setup //////////////////////////////////
+
   implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContexts.synchronous)
 
   val xa = Transactor.fromDriverManager[IO](
