@@ -53,33 +53,33 @@ object c_InsertingUpdating extends App {
 
   insert1("Bob", None).quick.unsafeRunSync // switch to YOLO mode
 
-  sql"select id, name, age from person".query[Person].quick.unsafeRunSync
+  sql"select id, name, age from person".query[PersonInserting].quick.unsafeRunSync
 
   //////////// update ////////////////
   sql"update person set age = 15 where name = 'Alice'".update.quick.unsafeRunSync
-  sql"select id, name, age from person".query[Person].quick.unsafeRunSync
+  sql"select id, name, age from person".query[PersonInserting].quick.unsafeRunSync
 
 
   //////////// retrieving inserted id method 1 ////////////////
 
-  def insert2(name: String, age: Option[Short]): ConnectionIO[Person] =
+  def insert2(name: String, age: Option[Short]): ConnectionIO[PersonInserting] =
     for {
       _  <- sql"insert into person (name, age) values ($name, $age)".update.run
       id <- sql"select lastval()".query[Long].unique
-      p  <- sql"select id, name, age from person where id = $id".query[Person].unique
+      p  <- sql"select id, name, age from person where id = $id".query[PersonInserting].unique
     } yield p
 
   insert2("Jimmy", Some(42)).quick.unsafeRunSync
 
   //////////// retrieving inserted id method 2 ////////////////
 
-  def insert2_H2(name: String, age: Option[Short]): ConnectionIO[Person] =
+  def insert2_H2(name: String, age: Option[Short]): ConnectionIO[PersonInserting] =
     for {
       id <- sql"insert into person (name, age) values ($name, $age)"
         .update
         .withUniqueGeneratedKeys[Int]("id")
       p  <- sql"select id, name, age from person where id = $id"
-        .query[Person]
+        .query[PersonInserting]
         .unique
     } yield p
 
@@ -87,7 +87,7 @@ object c_InsertingUpdating extends App {
 
   //////////// retrieving inserted id method 3 (Postgres) ////////////////
 
-  def insert3(name: String, age: Option[Short]): ConnectionIO[Person] =
+  def insert3(name: String, age: Option[Short]): ConnectionIO[PersonInserting] =
     sql"insert into person (name, age) values ($name, $age)"
       .update
       .withUniqueGeneratedKeys("id", "name", "age")
@@ -108,9 +108,9 @@ object c_InsertingUpdating extends App {
 
   //////////// batch update and retrieve id (Postgres) ////////////////
 
-  def insertMany2(ps: List[PersonInfo]): Stream[ConnectionIO, Person] = {
+  def insertMany2(ps: List[PersonInfo]): Stream[ConnectionIO, PersonInserting] = {
     val sql = "insert into person (name, age) values (?, ?)"
-    Update[PersonInfo](sql).updateManyWithGeneratedKeys[Person]("id", "name", "age")(ps)
+    Update[PersonInfo](sql).updateManyWithGeneratedKeys[PersonInserting]("id", "name", "age")(ps)
   }
 
   // Some rows to insert
