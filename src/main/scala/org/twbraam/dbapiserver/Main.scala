@@ -1,21 +1,14 @@
 package org.twbraam.dbapiserver
 
 import cats.effect.ExitCode
-import org.http4s.server._
-import org.http4s.server.blaze.BlazeServerBuilder
-import org.http4s.server.middleware.CORS
-import org.twbraam.dbapiserver.configuration.Configuration
-import org.twbraam.dbapiserver.dbapiserver.UserPersistence
-import org.twbraam.dbapiserver.persistence.UserPersistenceService
-import zio._
-import zio.blocking.Blocking
-import zio.clock.Clock
-import cats.effect.ExitCode
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware.CORS
+import org.twbraam.dbapiserver.configuration.Configuration
+import org.twbraam.dbapiserver.dbapiserver.UserPersistence
 import org.twbraam.dbapiserver.http.Api
+import org.twbraam.dbapiserver.persistence.UserPersistenceService
 import zio._
 import zio.blocking.Blocking
 import zio.clock.Clock

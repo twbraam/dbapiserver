@@ -1,6 +1,7 @@
 package org.twbraam.dbapiserver
 
-import pureconfig.{ConfigSource, loadConfigOrThrow}
+import pureconfig.ConfigSource
+import pureconfig.generic.auto._
 import zio._
 
 package object configuration {
@@ -20,7 +21,6 @@ package object configuration {
   val dbConfig: ZIO[Has[DbConfig], Throwable, DbConfig] = ZIO.access(_.get)
 
   object Configuration {
-    import pureconfig.generic.auto._
     val live: Layer[Throwable, Configuration] = ZLayer.fromEffectMany(
       Task
         .effect(ConfigSource.default.loadOrThrow[AppConfig])

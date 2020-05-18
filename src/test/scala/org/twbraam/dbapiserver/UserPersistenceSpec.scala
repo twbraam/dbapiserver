@@ -1,9 +1,9 @@
 package org.twbraam.dbapiserver
 
 import org.twbraam.dbapiserver.configuration.DbConfig
-import org.twbraam.dbapiserver.persistence.UserPersistenceService
 import org.twbraam.dbapiserver.dbapiserver._
 import org.twbraam.dbapiserver.domain.User
+import org.twbraam.dbapiserver.persistence.UserPersistenceService
 import zio.blocking.Blocking
 import zio.test.Assertion._
 import zio.test._

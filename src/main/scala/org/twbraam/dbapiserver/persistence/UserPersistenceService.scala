@@ -1,19 +1,18 @@
 package org.twbraam.dbapiserver.persistence
 
 import cats.effect.Blocker
-import doobie.implicits._
-import doobie.hikari._
 import doobie._
-
+import doobie.hikari._
+import doobie.implicits._
 import org.twbraam.dbapiserver.configuration
 import org.twbraam.dbapiserver.configuration.DbConfig
 import org.twbraam.dbapiserver.dbapiserver.{Persistence, UserPersistence}
 import org.twbraam.dbapiserver.domain.{User, UserNotFound}
-
-import scala.concurrent.ExecutionContext
 import zio._
 import zio.blocking.Blocking
 import zio.interop.catz._
+
+import scala.concurrent.ExecutionContext
 
 
 /**
